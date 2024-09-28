@@ -1,0 +1,231 @@
+(myenv) root@8c5b0da8f022:~/airflow/dags/unit_test# pytest test_with_pytest.py 
+================================================= test session starts ==================================================
+platform linux -- Python 3.8.12, pytest-8.3.3, pluggy-1.5.0
+rootdir: /home/airflow/dags/unit_test
+plugins: typeguard-4.3.0, dash-2.18.1
+collected 4 items                                                                                                      
+
+test_with_pytest.py F...                                                                                         [100%]
+
+======================================================= FAILURES =======================================================
+________________________________________________ test_load_data_into_db ________________________________________________
+
+    def test_load_data_into_db():
+        """_summary_
+        This function checks if the load_data_into_db function is working properly by
+        comparing its output with test cases provided in the db in a table named
+        'loaded_data_test_case'
+    
+        INPUTS
+            DB_FILE_NAME : Name of the database file 'utils_output.db'
+            DB_PATH : path where the db file should be present
+            UNIT_TEST_DB_FILE_NAME: Name of the test database file 'unit_test_cases.db'
+    
+        SAMPLE USAGE
+            output=test_get_data()
+    
+        """
+        # build_dbs()
+        # load_data_into_db()
+        # connection = sqlite3.connect(DB_PATH + DB_FILE_NAME)
+        # df = pd.read_sql('select * from loaded_data', connection)
+        # connection.close()
+        # connection = sqlite3.connect(UNIT_TEST_DB_FILE_NAME)
+        # ref_df = pd.read_sql('select * from loaded_data_test_case', connection)
+        #load_data_into_db(DB_PATH, DB_FILE_NAME, DATA_DIRECTORY)
+        load_data_into_db()
+    
+        print("Connecting to database")
+        cnx = sqlite3.connect(DB_PATH+DB_FILE_NAME)
+        print("Reading data from loaded_data table")
+        loaded_data = pd.read_sql('select * from loaded_data', cnx)
+        print("loaded_data shape: ", loaded_data.shape)
+        printColumns(cnx,'loaded_data')
+        print("Connecting to database",TEST_DB_PATH+UNIT_TEST_DB_FILE_NAME)
+        cnx_test = sqlite3.connect(TEST_DB_PATH+UNIT_TEST_DB_FILE_NAME)
+        print("Reading data from loaded_data_test_case table")
+        loaded_data_test_case = pd.read_sql('select * from loaded_data_test_case', cnx_test)
+        print("loaded_data_test_case shape: ", loaded_data_test_case.shape)
+        printColumns(cnx_test,'loaded_data_test_case')
+    
+        print("Closing database connections")
+        cnx.close()
+        cnx_test.close()
+    
+>       assert loaded_data.equals(loaded_data_test_case), "Dataframes not same, incorrect data loading"
+E       AssertionError: Dataframes not same, incorrect data loading
+E       assert False
+E        +  where False = equals(           created_date city_mapped first_platform_c  ... view_programs_page whatsapp_chat_click  app_complete_flag\n0 ...01         ncr           Level0  ...               None                None                  0\n\n[100 rows x 45 columns])
+E        +    where equals =    city_mapped first_platform_c first_utm_medium_c  ... whatsapp_chat_click  app_complete_flag         created_date\n0 ...    Level0             Level1  ...                None                  0  2021-11-12 07:02:01\n\n[100 rows x 45 columns].equals
+
+test_with_pytest.py:57: AssertionError
+------------------------------------------------- Captured stdout call -------------------------------------------------
+Load CSV file: /home/airflow/dags/unit_test/leadscoring_test.csv
+load_data_into_db Head=                     city_mapped first_platform_c  ... whatsapp_chat_click app_complete_flag
+created_date                                      ...                                      
+2021-11-19 15:25:38    ghazipur           Level3  ...                 NaN                 1
+2021-08-24 15:17:20      murbad           Level3  ...                 NaN                 1
+2021-07-20 16:01:20      mumbai          Level14  ...                 NaN                 0
+2021-09-04 14:00:42   bengaluru           Level7  ...                 NaN                 1
+2022-01-13 05:41:45         ncr           Level8  ...                 NaN                 0
+
+[5 rows x 44 columns]
+Process columns for NAN to 0 for total_leads_dropped and referred_lead columns
+Index(['city_mapped', 'first_platform_c', 'first_utm_medium_c',
+       'first_utm_source_c', 'total_leads_droppped', 'referred_lead',
+       '1_on_1_industry_mentorship', 'call_us_button_clicked',
+       'career_assistance', 'career_coach', 'career_impact', 'careers',
+       'chat_clicked', 'companies', 'download_button_clicked',
+       'download_syllabus', 'emi_partner_click', 'emi_plans_clicked',
+       'fee_component_click', 'hiring_partners',
+       'homepage_upgrad_support_number_clicked',
+       'industry_projects_case_studies', 'live_chat_button_clicked',
+       'payment_amount_toggle_mover', 'placement_support',
+       'placement_support_banner_tab_clicked', 'program_structure',
+       'programme_curriculum', 'programme_faculty',
+       'request_callback_on_instant_customer_support_cta_clicked',
+       'shorts_entry_click', 'social_referral_click',
+       'specialisation_tab_clicked', 'specializations', 'specilization_click',
+       'syllabus', 'syllabus_expand', 'syllabus_submodule_expand',
+       'tab_career_assistance', 'tab_job_opportunities', 'tab_student_support',
+       'view_programs_page', 'whatsapp_chat_click', 'app_complete_flag'],
+      dtype='object')
+DF Index
+Index(['2021-11-19 15:25:38', '2021-08-24 15:17:20', '2021-07-20 16:01:20',
+       '2021-09-04 14:00:42', '2022-01-13 05:41:45', '2021-08-09 22:57:30',
+       '2021-08-16 14:22:06', '2022-01-23 06:58:04', '2021-08-03 03:24:14',
+       '2022-01-02 01:49:38', '2021-11-12 12:39:50', '2021-08-05 12:49:45',
+       '2021-11-03 18:46:17', '2021-07-01 07:32:25', '2021-12-05 03:55:24',
+       '2021-09-14 07:53:56', '2021-11-22 10:54:05', '2021-09-14 05:40:48',
+       '2021-11-16 11:50:10', '2021-12-30 00:15:09', '2021-12-30 18:09:00',
+       '2021-09-14 08:38:19', '2021-07-31 16:54:09', '2021-10-07 15:12:12',
+       '2021-09-18 11:22:21', '2022-01-06 06:11:50', '2021-11-19 16:21:16',
+       '2022-01-03 16:27:11', '2021-09-07 06:35:11', '2022-02-11 09:50:05',
+       '2022-01-17 12:42:46', '2021-09-10 10:12:24', '2021-10-21 17:53:46',
+       '2021-10-17 12:38:55', '2021-09-26 19:00:23', '2021-09-22 14:23:15',
+       '2021-10-02 09:22:59', '2021-09-16 06:21:22', '2021-07-08 11:28:20',
+       '2021-09-03 05:39:11', '2021-12-29 22:30:16', '2021-10-10 03:18:11',
+       '2021-09-07 13:04:33', '2021-09-14 11:35:38', '2021-07-31 18:35:05',
+       '2021-08-05 05:35:33', '2021-12-09 18:00:07', '2021-09-10 16:06:40',
+       '2021-07-12 16:56:30', '2021-08-29 17:37:16', '2021-12-03 13:57:15',
+       '2021-11-13 02:59:54', '2021-08-25 18:46:09', '2022-01-25 11:53:14',
+       '2021-07-15 19:37:21', '2021-11-09 05:50:51', '2022-01-12 09:57:33',
+       '2021-08-24 16:34:11', '2021-08-28 06:00:55', '2021-08-16 15:42:46',
+       '2021-12-10 13:36:32', '2021-12-18 12:38:11', '2021-07-19 11:44:47',
+       '2021-11-30 12:59:19', '2021-08-22 15:01:43', '2022-02-09 07:14:35',
+       '2021-12-30 14:22:22', '2021-08-06 22:35:33', '2021-11-15 04:53:07',
+       '2021-10-28 18:42:07', '2021-10-14 16:00:03', '2021-09-25 05:24:42',
+       '2021-08-16 14:14:55', '2021-07-17 06:44:58', '2021-07-30 14:54:22',
+       '2021-12-23 02:02:04', '2021-07-11 05:39:39', '2022-02-11 09:00:25',
+       '2022-02-02 13:57:52', '2021-07-05 04:26:31', '2021-08-24 16:09:41',
+       '2021-11-19 03:20:54', '2021-11-27 12:14:52', '2021-09-22 10:58:58',
+       '2022-01-08 08:59:10', '2021-10-05 18:07:25', '2021-11-24 05:48:08',
+       '2021-09-23 08:26:23', '2021-08-28 11:35:09', '2022-02-10 08:28:30',
+       '2021-11-25 17:09:48', '2021-12-07 11:00:46', '2021-12-23 04:28:48',
+       '2021-12-30 14:50:05', '2021-11-13 14:11:02', '2022-01-19 11:18:46',
+       '2021-12-12 14:14:12', '2021-09-07 15:44:36', '2022-01-16 15:38:15',
+       '2021-11-12 07:02:01'],
+      dtype='object', name='created_date')
+Saves the processed dataframe in the db table loaded_data
+Adding 'created_date' column
+Connecting to database
+Reading data from loaded_data table
+loaded_data shape:  (100, 45)
+Column ID: 0, Name: city_mapped, Type: TEXT
+Column ID: 1, Name: first_platform_c, Type: TEXT
+Column ID: 2, Name: first_utm_medium_c, Type: TEXT
+Column ID: 3, Name: first_utm_source_c, Type: TEXT
+Column ID: 4, Name: total_leads_droppped, Type: REAL
+Column ID: 5, Name: referred_lead, Type: REAL
+Column ID: 6, Name: 1_on_1_industry_mentorship, Type: REAL
+Column ID: 7, Name: call_us_button_clicked, Type: REAL
+Column ID: 8, Name: career_assistance, Type: REAL
+Column ID: 9, Name: career_coach, Type: REAL
+Column ID: 10, Name: career_impact, Type: REAL
+Column ID: 11, Name: careers, Type: REAL
+Column ID: 12, Name: chat_clicked, Type: REAL
+Column ID: 13, Name: companies, Type: REAL
+Column ID: 14, Name: download_button_clicked, Type: REAL
+Column ID: 15, Name: download_syllabus, Type: REAL
+Column ID: 16, Name: emi_partner_click, Type: REAL
+Column ID: 17, Name: emi_plans_clicked, Type: REAL
+Column ID: 18, Name: fee_component_click, Type: REAL
+Column ID: 19, Name: hiring_partners, Type: REAL
+Column ID: 20, Name: homepage_upgrad_support_number_clicked, Type: REAL
+Column ID: 21, Name: industry_projects_case_studies, Type: REAL
+Column ID: 22, Name: live_chat_button_clicked, Type: REAL
+Column ID: 23, Name: payment_amount_toggle_mover, Type: REAL
+Column ID: 24, Name: placement_support, Type: REAL
+Column ID: 25, Name: placement_support_banner_tab_clicked, Type: REAL
+Column ID: 26, Name: program_structure, Type: REAL
+Column ID: 27, Name: programme_curriculum, Type: REAL
+Column ID: 28, Name: programme_faculty, Type: REAL
+Column ID: 29, Name: request_callback_on_instant_customer_support_cta_clicked, Type: REAL
+Column ID: 30, Name: shorts_entry_click, Type: REAL
+Column ID: 31, Name: social_referral_click, Type: REAL
+Column ID: 32, Name: specialisation_tab_clicked, Type: REAL
+Column ID: 33, Name: specializations, Type: REAL
+Column ID: 34, Name: specilization_click, Type: REAL
+Column ID: 35, Name: syllabus, Type: REAL
+Column ID: 36, Name: syllabus_expand, Type: REAL
+Column ID: 37, Name: syllabus_submodule_expand, Type: REAL
+Column ID: 38, Name: tab_career_assistance, Type: REAL
+Column ID: 39, Name: tab_job_opportunities, Type: REAL
+Column ID: 40, Name: tab_student_support, Type: REAL
+Column ID: 41, Name: view_programs_page, Type: REAL
+Column ID: 42, Name: whatsapp_chat_click, Type: REAL
+Column ID: 43, Name: app_complete_flag, Type: INTEGER
+Column ID: 44, Name: created_date, Type: TEXT
+Connecting to database /home/airflow/dags/unit_test/unit_test_cases.db
+Reading data from loaded_data_test_case table
+loaded_data_test_case shape:  (100, 45)
+Column ID: 0, Name: created_date, Type: TEXT
+Column ID: 1, Name: city_mapped, Type: TEXT
+Column ID: 2, Name: first_platform_c, Type: TEXT
+Column ID: 3, Name: first_utm_medium_c, Type: TEXT
+Column ID: 4, Name: first_utm_source_c, Type: TEXT
+Column ID: 5, Name: total_leads_droppped, Type: REAL
+Column ID: 6, Name: referred_lead, Type: REAL
+Column ID: 7, Name: 1_on_1_industry_mentorship, Type: REAL
+Column ID: 8, Name: call_us_button_clicked, Type: REAL
+Column ID: 9, Name: career_assistance, Type: REAL
+Column ID: 10, Name: career_coach, Type: REAL
+Column ID: 11, Name: career_impact, Type: REAL
+Column ID: 12, Name: careers, Type: REAL
+Column ID: 13, Name: chat_clicked, Type: REAL
+Column ID: 14, Name: companies, Type: REAL
+Column ID: 15, Name: download_button_clicked, Type: REAL
+Column ID: 16, Name: download_syllabus, Type: REAL
+Column ID: 17, Name: emi_partner_click, Type: REAL
+Column ID: 18, Name: emi_plans_clicked, Type: REAL
+Column ID: 19, Name: fee_component_click, Type: REAL
+Column ID: 20, Name: hiring_partners, Type: REAL
+Column ID: 21, Name: homepage_upgrad_support_number_clicked, Type: REAL
+Column ID: 22, Name: industry_projects_case_studies, Type: REAL
+Column ID: 23, Name: live_chat_button_clicked, Type: REAL
+Column ID: 24, Name: payment_amount_toggle_mover, Type: REAL
+Column ID: 25, Name: placement_support, Type: REAL
+Column ID: 26, Name: placement_support_banner_tab_clicked, Type: REAL
+Column ID: 27, Name: program_structure, Type: REAL
+Column ID: 28, Name: programme_curriculum, Type: REAL
+Column ID: 29, Name: programme_faculty, Type: REAL
+Column ID: 30, Name: request_callback_on_instant_customer_support_cta_clicked, Type: REAL
+Column ID: 31, Name: shorts_entry_click, Type: REAL
+Column ID: 32, Name: social_referral_click, Type: REAL
+Column ID: 33, Name: specialisation_tab_clicked, Type: REAL
+Column ID: 34, Name: specializations, Type: REAL
+Column ID: 35, Name: specilization_click, Type: REAL
+Column ID: 36, Name: syllabus, Type: REAL
+Column ID: 37, Name: syllabus_expand, Type: REAL
+Column ID: 38, Name: syllabus_submodule_expand, Type: REAL
+Column ID: 39, Name: tab_career_assistance, Type: REAL
+Column ID: 40, Name: tab_job_opportunities, Type: REAL
+Column ID: 41, Name: tab_student_support, Type: REAL
+Column ID: 42, Name: view_programs_page, Type: REAL
+Column ID: 43, Name: whatsapp_chat_click, Type: REAL
+Column ID: 44, Name: app_complete_flag, Type: INTEGER
+Closing database connections
+=============================================== short test summary info ================================================
+FAILED test_with_pytest.py::test_load_data_into_db - AssertionError: Dataframes not same, incorrect data loading
+============================================= 1 failed, 3 passed in 5.08s ==============================================
+(myenv) root@8c5b0da8f022:~/airflow/dags/unit_test# 

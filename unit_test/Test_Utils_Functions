@@ -1,0 +1,14 @@
+import utils 
+from constants import *
+#from test import *
+
+#print("DB_PATH",DB_PATH)
+utils.build_dbs()
+
+utils.load_data_into_db()
+
+utils.map_city_tier()
+
+utils.map_categorical_vars()
+
+utils.interactions_mapping()
